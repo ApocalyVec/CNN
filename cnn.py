@@ -28,6 +28,11 @@ classifier.add(
 #   Sliding window with a size of 2
 classifier.add(MaxPooling2D(pool_size=(2, 2)))
 
+# * Step 2.1 - Second convolutional - maxpooling Layer
+classifier.add(
+    Conv2D(32, (3, 3), activation='relu'))  # we don't need the input_shape because we have layers before this layer
+classifier.add(MaxPooling2D(pool_size=(2, 2)))
+
 # Step 3 - Flattening
 #   this will be the input layer of the classic ANN that immediately follows
 classifier.add(Flatten())
