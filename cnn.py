@@ -3,8 +3,10 @@ from keras.layers import Conv2D
 from keras.layers import MaxPooling2D
 from keras.layers import Flatten
 from keras.layers import Dense
+from keras.preprocessing import image
 from keras_preprocessing.image import ImageDataGenerator
 import PIL.Image
+import tensorflow
 
 """
 Steps:
@@ -68,6 +70,24 @@ test_set = test_datagen.flow_from_directory('dataset/test_set',
 
 classifier.fit_generator(training_set,
                          steps_per_epoch=8000,
-                         epochs=25,
+                         epochs=3,
                          validation_data=test_set,
                          validation_steps=2000)
+
+# save the trained model
+from keras.models import load_model
+
+classifier.save('/trained_model/classifier.h5')
+'''
+use this line if you want to load the model back
+classifier = load_model('/trained_model/classifier.h5')
+'''
+# make a single prediction
+import numpy as np
+from keras_preprocessing import image
+
+test_image = image.load_img('/dataset/single_prediction/cat_or_dog_1.jpg', target_size=(64, 64))
+test_image = image.img_to_array(test_image)
+test_image = np.expand_dims(test_image, axis=0)
+result = classifier.predict(test_image)
+print(str(training_set.class_indices))  # get which prediction result correspond to which classification
